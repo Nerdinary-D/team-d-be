@@ -19,10 +19,10 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi allApi(ApiErrorCodeOperationCustomizer apiErrorCodeOperationCustomizer) {
         return GroupedOpenApi.builder()
-                .group("Table-API-v1")
+                .group("AllGround-API-v1")
                 .pathsToMatch("/**")
-                .displayName("Table API 명세서")
-                .addOpenApiCustomizer(createOpenApiCustomizer("Table API", "v0.1"))
+                .displayName("AllGround API 명세서")
+                .addOpenApiCustomizer(createOpenApiCustomizer("AllGround API", "v0.1"))
                 .addOperationCustomizer(apiErrorCodeOperationCustomizer)
                 .build();
     }
@@ -30,7 +30,7 @@ public class SwaggerConfig {
     /** OpenAPI 객체의 공통 설정을 담당하는 커스텀 로직 */
     private OpenApiCustomizer createOpenApiCustomizer(String title, String version) {
         return openApi -> {
-            openApi.info(new Info().title(title).version(version).description("Table API Swagger 명세서입니다."));
+            openApi.info(new Info().title(title).version(version).description("AllGround API Swagger 명세서입니다."));
             openApi.setServers(List.of(new Server().url("/")));
             openApi.addSecurityItem(new SecurityRequirement().addList(securitySchemeName));
             openApi.schemaRequirement(securitySchemeName, createBearerAuthScheme());
