@@ -11,7 +11,7 @@ RUN ./gradlew bootJar --no-daemon -x test
 # Run stage
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-RUN useradd -r -u 1000 spring
+RUN useradd -r spring
 COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
 USER spring
