@@ -27,7 +27,7 @@ public final class CustomerRequest {
                             example = "[\"NO_STEP_COURT_ENTRY\", \"GUIDE_DOG_ALLOWED\"]",
                             requiredMode = Schema.RequiredMode.REQUIRED)
                     @NotEmpty(message = "큐레이션 정보는 최소 하나 이상 필요합니다.")
-                    List<Curation> curations,
+                    List<@NotNull(message = "큐레이션 항목은 null일 수 없습니다.") Curation> curations,
             @Schema(description = "활동 지역", example = "SEOUL", requiredMode = Schema.RequiredMode.REQUIRED)
                     @NotNull(message = "지역 정보는 필수 값입니다.")
                     Region region) {}
@@ -39,7 +39,7 @@ public final class CustomerRequest {
                             example = "[\"GUIDE_DOG_ALLOWED\"]",
                             requiredMode = Schema.RequiredMode.REQUIRED)
                     @NotEmpty(message = "큐레이션 정보는 최소 하나 이상 필요합니다.")
-                    List<Curation> curations,
+                    List<@NotNull(message = "큐레이션 항목은 null일 수 없습니다.") Curation> curations,
             @Schema(description = "변경할 활동 지역", example = "BUSAN", requiredMode = Schema.RequiredMode.REQUIRED)
                     @NotNull(message = "지역 정보는 필수 값입니다.")
                     Region region) {}
