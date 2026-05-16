@@ -25,6 +25,6 @@ public final class LikeResponse {
             @Schema(description = "시설물 대표 이미지 URL", example = "https://image.com/facility/1.png") String image,
             @Schema(description = "시설물 명칭", example = "강남 스포츠 센터") String name,
             @Schema(description = "시설물 카테고리") Category category,
-            @Schema(description = "시설물 연관 해시태그 리스트", example = "['#역세권', '#체육관']") List<String> hashTags,
+            @Schema(description = "시설물 연관 해시태그 리스트", example = "[\"`#역세권`\", \"`#체육관`\"]") List<String> hashTags,
             @Schema(description = "찜 활성화 여부 (내 목록이므로 항상 true)", example = "true") boolean isLiked) {}
 }
