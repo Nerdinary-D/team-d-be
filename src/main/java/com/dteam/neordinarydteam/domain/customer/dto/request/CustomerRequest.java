@@ -3,6 +3,7 @@ package com.dteam.neordinarydteam.domain.customer.dto.request;
 import com.dteam.neordinarydteam.global.enums.Curation;
 import com.dteam.neordinarydteam.global.enums.Region;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -22,6 +23,9 @@ public final class CustomerRequest {
                             requiredMode = Schema.RequiredMode.REQUIRED)
                     @NotNull(message = "UUID는 필수 값입니다.")
                     UUID uuid,
+            @Schema(description = "닉네임", example = "홍길동", requiredMode = Schema.RequiredMode.REQUIRED)
+                    @NotBlank(message = "닉네임은 필수 값입니다.")
+                    String nickname,
             @Schema(
                             description = "큐레이션 설정 리스트",
                             example = "[\"NO_STEP_COURT_ENTRY\", \"GUIDE_DOG_ALLOWED\"]",

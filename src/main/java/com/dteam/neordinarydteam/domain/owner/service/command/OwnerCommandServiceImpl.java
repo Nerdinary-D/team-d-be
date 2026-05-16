@@ -29,7 +29,8 @@ public class OwnerCommandServiceImpl implements OwnerCommandService {
         if (memberRepository.existsByUuid(dto.uuid())) {
             throw new OwnerException(OwnerErrorCode.OWNER_ALREADY_EXISTS);
         }
-        Member savedMember = memberRepository.save(memberMapper.toCreateEntity(dto.uuid(), MemberRole.ROLE_OWNER));
+        Member savedMember =
+                memberRepository.save(memberMapper.toCreateEntity(dto.uuid(), MemberRole.ROLE_OWNER, dto.nickname()));
 
         Owner savedOwner = ownerRepository.save(ownerMapper.toCreateEntity(savedMember));
 

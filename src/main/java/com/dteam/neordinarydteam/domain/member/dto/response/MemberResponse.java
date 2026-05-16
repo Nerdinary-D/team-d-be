@@ -12,4 +12,10 @@ public final class MemberResponse {
     public record RoleDTO(
             @Schema(description = "회원의 고유 UUID", example = "123e4567-e89b-12d3-a456-426614174000") String uuid,
             @Schema(description = "회원의 권한/역할", example = "USER") MemberRole role) {}
+
+    @Schema(description = "회원 정보 조회 응답 DTO")
+    public record InfoDTO(
+            @Schema(description = "회원의 고유 UUID", example = "123e4567-e89b-12d3-a456-426614174000") String uuid,
+            @Schema(description = "회원의 권한/역할", example = "ROLE_CUSTOMER") MemberRole role,
+            @Schema(description = "회원 닉네임", example = "홍길동") String nickname) {}
 }
