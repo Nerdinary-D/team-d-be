@@ -18,9 +18,14 @@ public final class CustomerResponse {
             @Schema(description = "생성된 고객의 회원 UUID", example = "123e4567-e89b-12d3-a456-426614174000") UUID uuid,
             @Schema(description = "생성 일시") LocalDateTime createdAt) {}
 
-    @Schema(description = "고객 수정 완료 응답 객체")
-    public record UpdateDTO(
-            @Schema(description = "수정된 고객의 회원 UUID", example = "123e4567-e89b-12d3-a456-426614174000") UUID uuid,
+    @Schema(description = "고객 큐레이션 수정 완료 응답 객체")
+    public record UpdateCurationsDTO(
+            @Schema(description = "수정된 고객의 회원 UUID") UUID uuid,
+            @Schema(description = "수정 일시") LocalDateTime updatedAt) {}
+
+    @Schema(description = "고객 지역 수정 완료 응답 객체")
+    public record UpdateRegionDTO(
+            @Schema(description = "수정된 고객의 회원 UUID") UUID uuid,
             @Schema(description = "수정 일시") LocalDateTime updatedAt) {}
 
     @Schema(description = "고객 삭제 완료 응답 객체")

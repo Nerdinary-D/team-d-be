@@ -23,7 +23,10 @@ public interface CustomerMapper {
     CustomerResponse.CreateDTO toCreateDTO(UUID uuid, Customer customer);
 
     @Mapping(source = "customer.member.uuid", target = "uuid")
-    CustomerResponse.UpdateDTO toUpdateDTO(Customer customer);
+    CustomerResponse.UpdateCurationsDTO toUpdateCurationsDTO(Customer customer);
+
+    @Mapping(source = "customer.member.uuid", target = "uuid")
+    CustomerResponse.UpdateRegionDTO toUpdateRegionDTO(Customer customer);
 
     CustomerResponse.DeleteDTO toDeleteDTO(UUID uuid, LocalDateTime deletedAt);
 
