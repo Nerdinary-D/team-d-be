@@ -1,10 +1,11 @@
 package com.dteam.neordinarydteam.domain.like.service.command;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.dteam.neordinarydteam.domain.like.dto.request.LikeRequest;
+import java.util.UUID;
 
-@Service
-@RequiredArgsConstructor
-@Transactional
-public class LikeCommandService {}
+public interface LikeCommandService {
+
+    void createLike(LikeRequest.CreateDTO dto);
+
+    void deleteLike(UUID uuid, Long facilityId);
+}

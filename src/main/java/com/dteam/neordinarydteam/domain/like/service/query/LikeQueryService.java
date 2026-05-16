@@ -1,10 +1,13 @@
 package com.dteam.neordinarydteam.domain.like.service.query;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.dteam.neordinarydteam.domain.like.dto.response.LikeResponse;
+import com.dteam.neordinarydteam.global.apiPayload.response.PageResponse;
+import java.util.UUID;
+import org.springframework.data.domain.Pageable;
 
-@Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class LikeQueryService {}
+public interface LikeQueryService {
+
+    LikeResponse.ExistDTO getExistsLike(UUID uuid, Long facilityId);
+
+    PageResponse<LikeResponse.MyDTO> getMyLikes(UUID uuid, Pageable pageable);
+}
