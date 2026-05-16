@@ -1,10 +1,9 @@
 package com.dteam.neordinarydteam.domain.customer.service.query;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.dteam.neordinarydteam.domain.customer.dto.response.CustomerResponse;
+import java.util.UUID;
 
-@Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class CustomerQueryService {}
+public interface CustomerQueryService {
+
+    CustomerResponse.MyProfileDTO getMyProfile(UUID uuid);
+}
