@@ -1,6 +1,8 @@
 package com.dteam.neordinarydteam.domain.facility.entity;
 
 import com.dteam.neordinarydteam.global.entity.BaseEntity;
+import com.dteam.neordinarydteam.global.enums.Curation;
+import com.dteam.neordinarydteam.global.enums.Region;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +29,13 @@ public class Facility extends BaseEntity {
     @Column
     private String image;
 
-    @ElementCollection
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "facility_infra_info", joinColumns = @JoinColumn(name = "facility_id"))
-    @Column(name = "infra_info")
-    private List<InfraInfo> infraInfos = new ArrayList<>();
+    @Column
+    private Region region;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "facility_curation", joinColumns = @JoinColumn(name = "facility_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "curation")
+    private List<Curation> curations = new ArrayList<>();
 }

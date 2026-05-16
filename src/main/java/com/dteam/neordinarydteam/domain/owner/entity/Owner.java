@@ -13,9 +13,13 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Owner extends BaseEntity {
-    @Column(name = "facility_id", nullable = false)
+    @Column(name = "facility_id")
     private Long facilityId;
 
     @Column(name = "member_id", nullable = false)
     private Long memberId;
+
+    public void assignFacility(Long facilityId) {
+        this.facilityId = facilityId;
+    }
 }
