@@ -30,7 +30,8 @@ public class Customer extends BaseEntity {
     private List<Curation> curations = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private Region region;
+    @Builder.Default
+    private Region region = Region.SEOUL;
 
     public void update(List<Curation> curations, Region region) {
         this.curations = curations;
