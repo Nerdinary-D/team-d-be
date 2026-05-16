@@ -34,12 +34,11 @@ public class FacilityCommandServiceImpl implements FacilityCommandService {
     private final KakaoGeocodingService kakaoGeocodingService;
 
     @Override
-    public FacilityResponse.CreateDTO createFacility(
-            String uuid, FacilityRequest.CreateDTO request, MultipartFile image) {
+    public FacilityResponse.CreateDTO createFacility(FacilityRequest.CreateDTO request, MultipartFile image) {
         // UUID 형식 검증
         UUID memberUuid;
         try {
-            memberUuid = UUID.fromString(uuid);
+            memberUuid = UUID.fromString(request.uuid());
         } catch (IllegalArgumentException e) {
             throw new FacilityException(FacilityErrorCode.INVALID_UUID);
         }
