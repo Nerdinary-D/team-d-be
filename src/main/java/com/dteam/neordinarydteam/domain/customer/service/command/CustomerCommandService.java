@@ -1,10 +1,13 @@
 package com.dteam.neordinarydteam.domain.customer.service.command;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.dteam.neordinarydteam.domain.customer.dto.request.CustomerRequest;
+import com.dteam.neordinarydteam.domain.customer.dto.response.CustomerResponse;
+import java.util.UUID;
 
-@Service
-@RequiredArgsConstructor
-@Transactional
-public class CustomerCommandService {}
+public interface CustomerCommandService {
+    CustomerResponse.CreateDTO createCustomer(CustomerRequest.CreateDTO dto);
+
+    CustomerResponse.UpdateDTO updateCustomer(UUID uuid, CustomerRequest.UpdateDTO dto);
+
+    CustomerResponse.DeleteDTO deleteCustomer(UUID uuid);
+}
