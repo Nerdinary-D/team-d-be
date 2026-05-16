@@ -16,6 +16,7 @@ import com.dteam.neordinarydteam.domain.member.repository.MemberRepository;
 import com.dteam.neordinarydteam.global.apiPayload.converter.PageConverter;
 import com.dteam.neordinarydteam.global.apiPayload.response.PageResponse;
 import com.dteam.neordinarydteam.global.enums.Curation;
+import com.dteam.neordinarydteam.global.enums.Region;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -68,7 +69,8 @@ public class FacilityQueryServiceImpl implements FacilityQueryService {
     }
 
     @Override
-    public PageResponse<FacilityResponse.ListItemDTO> getRecommendedFacilities(String uuid, Pageable pageable) {
+    public PageResponse<FacilityResponse.ListItemDTO> getRecommendedFacilities(
+            String uuid, Region region, Pageable pageable) {
         Member member = memberRepository
                 .findByUuid(UUID.fromString(uuid))
                 .orElseThrow(() -> new FacilityException(FacilityErrorCode.MEMBER_NOT_FOUND));
@@ -78,6 +80,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService {
         if (member.getRole() == MemberRole.ROLE_OWNER) {
             // Owner는 큐레이션 교집합 없이 전체 목록 반환
             allItems = facilityRepository.findAll().stream()
+                    .filter(facility -> region == null || facility.getRegion() == region)
                     .map(facility -> new FacilityResponse.ListItemDTO(
                             facility.getId(),
                             facility.getName(),
@@ -98,6 +101,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService {
             Set<Long> likedFacilityIds = Set.copyOf(likeRepository.findFacilityIdsByCustomerId(customer.getId()));
 
             allItems = facilityRepository.findAll().stream()
+                    .filter(facility -> region == null || facility.getRegion() == region)
                     .map(facility -> {
                         int matchCount = (int) facility.getCurations().stream()
                                 .filter(customerCurations::contains)

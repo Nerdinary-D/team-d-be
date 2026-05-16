@@ -9,6 +9,7 @@ import com.dteam.neordinarydteam.global.apiPayload.code.ErrorCode;
 import com.dteam.neordinarydteam.global.apiPayload.code.SuccessCode;
 import com.dteam.neordinarydteam.global.apiPayload.response.ApiResponse;
 import com.dteam.neordinarydteam.global.apiPayload.response.PageResponse;
+import com.dteam.neordinarydteam.global.enums.Region;
 import com.dteam.neordinarydteam.global.swagger.annotation.ApiErrorCodeExamples;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -73,9 +74,10 @@ public class FacilityController {
     public ApiResponse<PageResponse<FacilityResponse.ListItemDTO>> getRecommendedFacilities(
             @Parameter(description = "회원 UUID", example = "123e4567-e89b-12d3-a456-426614174000") @PathVariable
                     String uuid,
+            @Parameter(description = "지역 필터 (미입력 시 전체)") @RequestParam(required = false) Region region,
             @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
         PageResponse<FacilityResponse.ListItemDTO> response =
-                facilityQueryService.getRecommendedFacilities(uuid, pageable);
+                facilityQueryService.getRecommendedFacilities(uuid, region, pageable);
         return ApiResponse.onSuccess(SuccessCode.OK, response);
     }
 }
