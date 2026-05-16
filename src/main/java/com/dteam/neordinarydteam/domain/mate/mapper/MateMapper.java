@@ -23,5 +23,6 @@ public interface MateMapper {
     MateResponse.CreateDTO toCreateDTO(Mate mate, UUID uuid);
 
     @Mapping(source = "facility.id", target = "facilityId")
+    @Mapping(source = "facility.region", target = "region")
     MateResponse.ListDTO toListDTO(Mate mate);
 }
