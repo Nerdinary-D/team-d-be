@@ -35,18 +35,26 @@ public class CustomerController {
         return ApiResponse.onSuccess(SuccessCode.CREATED, customerCommandService.createCustomer(dto));
     }
 
-    @Operation(summary = "고객 정보 수정 API", description = "고객의 큐레이션 및 활동 지역 설정을 수정합니다.")
+    @Operation(summary = "고객 큐레이션 정보 수정 API", description = "고객의 큐레이션 설정을 수정합니다.")
     @ApiErrorCodeExamples(
             value = {ErrorCode.INVALID_TYPE_VALUE},
             customer = {CustomerErrorCode.CUSTOMER_NOT_FOUND})
-    @PatchMapping("/{uuid}")
-    public ApiResponse<CustomerResponse.UpdateDTO> updateCustomer(
-            @Parameter(description = "고객의 회원 고유 UUID", example = "123e4567-e89b-12d3-a456-426614174000")
-                    @PathVariable
-                    @NotNull(message = "UUID는 필수 값입니다.")
-                    UUID uuid,
-            @Valid @RequestBody CustomerRequest.UpdateDTO dto) {
-        return ApiResponse.onSuccess(SuccessCode.OK, customerCommandService.updateCustomer(uuid, dto));
+    @PatchMapping("/{uuid}/curations")
+    public ApiResponse<CustomerResponse.UpdateCurationsDTO> updateCustomerCurations(
+            @PathVariable @NotNull(message = "UUID는 필수 값입니다.") UUID uuid,
+            @Valid @RequestBody CustomerRequest.UpdateCurationsDTO dto) {
+        return ApiResponse.onSuccess(SuccessCode.OK, customerCommandService.updateCustomerCurations(uuid, dto));
+    }
+
+    @Operation(summary = "고객 활동 지역 수정 API", description = "고객의 활동 지역 설정을 수정합니다.")
+    @ApiErrorCodeExamples(
+            value = {ErrorCode.INVALID_TYPE_VALUE},
+            customer = {CustomerErrorCode.CUSTOMER_NOT_FOUND})
+    @PatchMapping("/{uuid}/region")
+    public ApiResponse<CustomerResponse.UpdateRegionDTO> updateCustomerRegion(
+            @PathVariable @NotNull(message = "UUID는 필수 값입니다.") UUID uuid,
+            @Valid @RequestBody CustomerRequest.UpdateRegionDTO dto) {
+        return ApiResponse.onSuccess(SuccessCode.OK, customerCommandService.updateCustomerRegion(uuid, dto));
     }
 
     @Operation(summary = "고객 삭제(탈퇴) API", description = "고객 정보를 시스템에서 삭제합니다.")
