@@ -1,0 +1,86 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.diffplug.spotless' version '6.25.0'
+}
+
+group = 'com.dteam'
+version = '0.0.1-SNAPSHOT'
+description = 'NeordinaryDTeam'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Web & Lombok & Mysql
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // MapStruct
+    implementation 'org.mapstruct:mapstruct:1.6.0'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.0'
+
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// Spotless 상세 설정
+spotless {
+    java {
+        palantirJavaFormat()
+
+        importOrder()                 // 임포트 순서 정렬
+        removeUnusedImports()         // 사용하지 않는 임포트 제거
+        trimTrailingWhitespace()      // 줄 끝 공백 제거
+        endWithNewline()              // 파일 끝 새 줄 추가
+    }
+}
+
+// Git Hook을 설치하는 태스크
+tasks.register('installGitHooks', Copy) {
+    // scripts/pre-commit 파일을
+    from new File(rootProject.rootDir, 'scripts/pre-commit')
+    // .git/hooks 폴더로 복사
+    into { new File(rootProject.rootDir, '.git/hooks') }
+    // 복사 시점에 실행 권한 강제 부여 (Unix-like OS)
+    doLast {
+        def hookFile = new File(rootProject.rootDir, '.git/hooks/pre-commit')
+        if (hookFile.exists()) {
+            hookFile.setExecutable(true)
+        }
+    }
+}
+tasks.named('clean') {
+    dependsOn 'installGitHooks'
+}
+tasks.named('build') {
+    dependsOn 'installGitHooks'
+}
+
