@@ -31,7 +31,7 @@ public class KakaoGeocodingService {
                 .encode()
                 .toUri();
 
-        log.info("카카오 API 요청 URI: {}", uri);
+        log.debug("카카오 Geocoding API 요청");
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "KakaoAK " + restApiKey);
@@ -43,12 +43,11 @@ public class KakaoGeocodingService {
             ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
 
             String body = response.getBody();
-            log.info("카카오 API 응답: {}", body);
 
             JsonNode root = objectMapper.readTree(body);
             JsonNode documents = root.path("documents");
             if (documents.isMissingNode() || !documents.isArray() || documents.size() == 0) {
-                throw new RuntimeException("주소에 대한 좌표를 찾을 수 없습니다: " + roadAddress);
+                throw new RuntimeException("주소에 대한 좌표를 찾을 수 없습니다.");
             }
             JsonNode first = documents.get(0);
 
@@ -73,8 +72,8 @@ public class KakaoGeocodingService {
 
             return new KakaoAddressResult(sido, sigungu, fullRoadAddress, latitude, longitude);
         } catch (Exception e) {
-            log.error("카카오 Geocoding API 실패 - 주소: {}, 에러: {}", roadAddress, e.getMessage(), e);
-            throw new RuntimeException("주소에 대한 좌표를 찾을 수 없습니다: " + roadAddress, e);
+            log.error("카카오 Geocoding API 실패: {}", e.getMessage());
+            throw new RuntimeException("주소에 대한 좌표를 찾을 수 없습니다.", e);
         }
     }
 

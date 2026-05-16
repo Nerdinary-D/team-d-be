@@ -11,6 +11,7 @@ import com.dteam.neordinarydteam.global.apiPayload.response.ApiResponse;
 import com.dteam.neordinarydteam.global.swagger.annotation.ApiErrorCodeExamples;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -38,11 +39,16 @@ public class FacilityController {
                                                             contentType = MediaType.APPLICATION_JSON_VALUE))))
     @ApiErrorCodeExamples(
             value = {ErrorCode.INVALID_TYPE_VALUE},
-            facility = {FacilityErrorCode.MEMBER_NOT_FOUND, FacilityErrorCode.IMAGE_UPLOAD_FAILED})
+            facility = {
+                FacilityErrorCode.INVALID_UUID,
+                FacilityErrorCode.MEMBER_NOT_FOUND,
+                FacilityErrorCode.GEOCODING_FAILED,
+                FacilityErrorCode.IMAGE_UPLOAD_FAILED
+            })
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<FacilityResponse.CreateDTO> createFacility(
             @RequestParam String uuid,
-            @RequestPart("request") FacilityRequest.CreateDTO request,
+            @Valid @RequestPart("request") FacilityRequest.CreateDTO request,
             @RequestPart("image") MultipartFile image) {
         FacilityResponse.CreateDTO response = facilityCommandService.createFacility(uuid, request, image);
         return ApiResponse.onSuccess(SuccessCode.CREATED, response);

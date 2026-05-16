@@ -36,12 +36,28 @@ public class FacilityCommandServiceImpl implements FacilityCommandService {
     @Override
     public FacilityResponse.CreateDTO createFacility(
             String uuid, FacilityRequest.CreateDTO request, MultipartFile image) {
+        // UUID 형식 검증
+        UUID memberUuid;
+        try {
+            memberUuid = UUID.fromString(uuid);
+        } catch (IllegalArgumentException e) {
+            throw new FacilityException(FacilityErrorCode.INVALID_UUID);
+        }
+
         Member member = memberRepository
-                .findByUuid(UUID.fromString(uuid))
+                .findByUuid(memberUuid)
                 .orElseThrow(() -> new FacilityException(FacilityErrorCode.MEMBER_NOT_FOUND));
 
         // 카카오 API로 주소 정보 + 좌표 조회
-        KakaoAddressResult addressResult = kakaoGeocodingService.getAddressInfo(request.roadAddress());
+        KakaoAddressResult addressResult;
+        try {
+            addressResult = kakaoGeocodingService.getAddressInfo(request.roadAddress());
+        } catch (RuntimeException e) {
+            throw new FacilityException(FacilityErrorCode.GEOCODING_FAILED);
+        }
+
+        // S3 이미지 업로드 (DB 저장 전에 수행하여 실패 시 고아 레코드 방지)
+        String imageUrl = s3Service.uploadFile(image);
 
         // Address 저장
         Address address = Address.builder()
@@ -54,9 +70,6 @@ public class FacilityCommandServiceImpl implements FacilityCommandService {
                 .build();
 
         Address savedAddress = addressRepository.save(address);
-
-        // S3 이미지 업로드
-        String imageUrl = s3Service.uploadFile(image);
 
         // Facility 저장
         Facility facility = Facility.builder()
