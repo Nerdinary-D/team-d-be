@@ -1,6 +1,7 @@
 package com.dteam.neordinarydteam.domain.owner.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
@@ -17,5 +18,8 @@ public final class OwnerRequest {
                             example = "123e4567-e89b-12d3-a456-426614174000",
                             requiredMode = Schema.RequiredMode.REQUIRED)
                     @NotNull(message = "UUID는 필수 값입니다.")
-                    UUID uuid) {}
+                    UUID uuid,
+            @Schema(description = "닉네임", example = "김사장", requiredMode = Schema.RequiredMode.REQUIRED)
+                    @NotBlank(message = "닉네임은 필수 값입니다.")
+                    String nickname) {}
 }
