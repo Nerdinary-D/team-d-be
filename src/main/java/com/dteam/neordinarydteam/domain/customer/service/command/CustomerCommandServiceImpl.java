@@ -44,7 +44,7 @@ public class CustomerCommandServiceImpl implements CustomerCommandService {
                 .findByUuid(uuid)
                 .orElseThrow(() -> new CustomerException(CustomerErrorCode.CUSTOMER_NOT_FOUND));
 
-        customer.update(dto.curation(), dto.region());
+        customer.update(dto.curations(), dto.region());
 
         return customerMapper.toUpdateDTO(customer);
     }
