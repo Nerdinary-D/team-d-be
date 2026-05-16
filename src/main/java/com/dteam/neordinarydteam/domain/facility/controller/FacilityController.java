@@ -48,10 +48,9 @@ public class FacilityController {
             })
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<FacilityResponse.CreateDTO> createFacility(
-            @RequestParam String uuid,
             @Valid @RequestPart("request") FacilityRequest.CreateDTO request,
             @RequestPart("image") MultipartFile image) {
-        FacilityResponse.CreateDTO response = facilityCommandService.createFacility(uuid, request, image);
+        FacilityResponse.CreateDTO response = facilityCommandService.createFacility(request, image);
         return ApiResponse.onSuccess(SuccessCode.CREATED, response);
     }
 

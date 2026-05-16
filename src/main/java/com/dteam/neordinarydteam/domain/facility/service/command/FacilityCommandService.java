@@ -5,5 +5,5 @@ import com.dteam.neordinarydteam.domain.facility.dto.response.FacilityResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FacilityCommandService {
-    FacilityResponse.CreateDTO createFacility(String uuid, FacilityRequest.CreateDTO request, MultipartFile image);
+    FacilityResponse.CreateDTO createFacility(FacilityRequest.CreateDTO request, MultipartFile image);
 }
