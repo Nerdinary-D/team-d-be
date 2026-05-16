@@ -8,8 +8,9 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum FacilityErrorCode implements BaseErrorCode {
-    // Domain - Facility
-    EXAMPLE_BAD_REQUEST(HttpStatus.BAD_REQUEST, "EXAMPLE400_1", "잘못된 입력 값입니다.");
+    FACILITY_NOT_FOUND(HttpStatus.NOT_FOUND, "FACILITY404_1", "시설을 찾을 수 없습니다."),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "FACILITY404_2", "회원을 찾을 수 없습니다."),
+    IMAGE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FACILITY500_1", "이미지 업로드에 실패했습니다.");
 
     private final HttpStatus status;
     private final String code;

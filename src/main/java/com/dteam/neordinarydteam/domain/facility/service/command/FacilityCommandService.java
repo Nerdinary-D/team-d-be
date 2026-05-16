@@ -1,10 +1,9 @@
 package com.dteam.neordinarydteam.domain.facility.service.command;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.dteam.neordinarydteam.domain.facility.dto.request.FacilityRequest;
+import com.dteam.neordinarydteam.domain.facility.dto.response.FacilityResponse;
+import org.springframework.web.multipart.MultipartFile;
 
-@Service
-@RequiredArgsConstructor
-@Transactional
-public class FacilityCommandService {}
+public interface FacilityCommandService {
+    FacilityResponse.CreateDTO createFacility(String uuid, FacilityRequest.CreateDTO request, MultipartFile image);
+}
