@@ -8,11 +8,15 @@ import com.dteam.neordinarydteam.domain.facility.service.query.FacilityQueryServ
 import com.dteam.neordinarydteam.global.apiPayload.code.ErrorCode;
 import com.dteam.neordinarydteam.global.apiPayload.code.SuccessCode;
 import com.dteam.neordinarydteam.global.apiPayload.response.ApiResponse;
+import com.dteam.neordinarydteam.global.apiPayload.response.PageResponse;
 import com.dteam.neordinarydteam.global.swagger.annotation.ApiErrorCodeExamples;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,6 +63,16 @@ public class FacilityController {
     @GetMapping("/{facilityId}")
     public ApiResponse<FacilityResponse.DetailDTO> getFacility(@PathVariable Long facilityId) {
         FacilityResponse.DetailDTO response = facilityQueryService.getFacility(facilityId);
+        return ApiResponse.onSuccess(SuccessCode.OK, response);
+    }
+
+    @Operation(summary = "맞춤형 시설 목록 조회", description = "사용자의 큐레이션 리스트와 시설의 큐레이션 리스트의 교집합 개수가 많은 순서대로 시설 목록을 반환합니다.")
+    @ApiErrorCodeExamples(facility = {FacilityErrorCode.CUSTOMER_NOT_FOUND})
+    @GetMapping("/recommended/{uuid}")
+    public ApiResponse<PageResponse<FacilityResponse.ListItemDTO>> getRecommendedFacilities(
+            @PathVariable String uuid, @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
+        PageResponse<FacilityResponse.ListItemDTO> response =
+                facilityQueryService.getRecommendedFacilities(uuid, pageable);
         return ApiResponse.onSuccess(SuccessCode.OK, response);
     }
 }
