@@ -9,6 +9,7 @@ import com.dteam.neordinarydteam.domain.facility.entity.Facility;
 import com.dteam.neordinarydteam.domain.facility.exception.FacilityException;
 import com.dteam.neordinarydteam.domain.facility.exception.code.FacilityErrorCode;
 import com.dteam.neordinarydteam.domain.facility.repository.FacilityRepository;
+import com.dteam.neordinarydteam.domain.like.repository.LikeRepository;
 import com.dteam.neordinarydteam.domain.member.entity.Member;
 import com.dteam.neordinarydteam.domain.member.enums.MemberRole;
 import com.dteam.neordinarydteam.domain.member.repository.MemberRepository;
@@ -36,6 +37,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService {
     private final AddressRepository addressRepository;
     private final CustomerRepository customerRepository;
     private final MemberRepository memberRepository;
+    private final LikeRepository likeRepository;
 
     @Override
     public FacilityResponse.DetailDTO getFacility(Long facilityId) {
@@ -83,7 +85,8 @@ public class FacilityQueryServiceImpl implements FacilityQueryService {
                             facility.getImage(),
                             facility.getRegion(),
                             facility.getCurations(),
-                            0))
+                            0,
+                            false))
                     .collect(Collectors.toList());
         } else {
             // Customer는 큐레이션 교집합 기반 정렬
@@ -92,6 +95,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService {
                     .orElseThrow(() -> new FacilityException(FacilityErrorCode.CUSTOMER_NOT_FOUND));
 
             Set<Curation> customerCurations = Set.copyOf(customer.getCurations());
+            Set<Long> likedFacilityIds = Set.copyOf(likeRepository.findFacilityIdsByCustomerId(customer.getId()));
 
             allItems = facilityRepository.findAll().stream()
                     .map(facility -> {
@@ -105,7 +109,8 @@ public class FacilityQueryServiceImpl implements FacilityQueryService {
                                 facility.getImage(),
                                 facility.getRegion(),
                                 facility.getCurations(),
-                                matchCount);
+                                matchCount,
+                                likedFacilityIds.contains(facility.getId()));
                     })
                     .sorted(Comparator.comparingInt(FacilityResponse.ListItemDTO::matchCount)
                             .reversed())
