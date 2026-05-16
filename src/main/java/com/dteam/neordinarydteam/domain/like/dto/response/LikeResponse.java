@@ -22,6 +22,7 @@ public final class LikeResponse {
     @Schema(description = "나의 찜 목록 상세 조회 응답 객체")
     public record MyDTO(
             @Schema(description = "고객 고유 UUID", example = "123e4567-e89b-12d3-a456-426614174000") UUID uuid,
+            @Schema(description = "연관 시설물 고유 ID", example = "1") Long facilityId,
             @Schema(description = "시설물 대표 이미지 URL", example = "https://image.com/facility/1.png") String image,
             @Schema(description = "시설물 명칭", example = "강남 스포츠 센터") String name,
             @Schema(description = "시설물 카테고리") Category category,
