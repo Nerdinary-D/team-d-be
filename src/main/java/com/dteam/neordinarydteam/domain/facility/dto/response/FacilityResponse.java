@@ -28,7 +28,8 @@ public final class FacilityResponse {
             String image,
             Region region,
             List<Curation> curations,
-            int matchCount) {}
+            int matchCount,
+            boolean isLiked) {}
 
     public record AddressDTO(
             String sido, String sigungu, String roadAddress, String detailAddress, String latitude, String longitude) {}
