@@ -21,6 +21,15 @@ public final class FacilityResponse {
             List<Curation> curations,
             AddressDTO address) {}
 
+    public record ListItemDTO(
+            Long id,
+            String name,
+            Category category,
+            String image,
+            Region region,
+            List<Curation> curations,
+            int matchCount) {}
+
     public record AddressDTO(
             String sido, String sigungu, String roadAddress, String detailAddress, String latitude, String longitude) {}
 }
