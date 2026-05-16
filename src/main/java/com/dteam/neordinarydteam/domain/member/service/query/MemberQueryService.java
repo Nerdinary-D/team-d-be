@@ -1,10 +1,7 @@
 package com.dteam.neordinarydteam.domain.member.service.query;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.dteam.neordinarydteam.domain.member.dto.response.MemberResponse;
 
-@Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class MemberQueryService {}
+public interface MemberQueryService {
+    MemberResponse.RoleDTO getMemberRole(String uuid);
+}
