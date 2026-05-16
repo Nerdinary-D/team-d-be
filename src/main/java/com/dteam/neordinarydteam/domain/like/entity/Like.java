@@ -1,4 +1,4 @@
-package com.dteam.neordinarydteam.domain.bookmark.entity;
+package com.dteam.neordinarydteam.domain.like.entity;
 
 import com.dteam.neordinarydteam.global.entity.BaseEntity;
 import jakarta.persistence.Column;
@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Bookmark extends BaseEntity {
+public class Like extends BaseEntity {
     @Column
     private String exampleColumn;
 

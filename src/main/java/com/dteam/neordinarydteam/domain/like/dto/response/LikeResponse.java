@@ -1,7 +1,7 @@
-package com.dteam.neordinarydteam.domain.bookmark.dto.request;
+package com.dteam.neordinarydteam.domain.like.dto.response;
 
-public final class BookmarkRequest {
-    private BookmarkRequest() {
+public final class LikeResponse {
+    private LikeResponse() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
