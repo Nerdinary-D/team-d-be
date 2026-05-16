@@ -31,7 +31,7 @@ public class MateController {
 
     @GetMapping
     public ApiResponse<PageResponse<MateResponse.ListDTO>> getPosts(
-            @RequestParam Long facilityId,
+            @RequestParam(required = false) Long facilityId,
             @ParameterObject @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
                     Pageable pageable) {
         return ApiResponse.onSuccess(SuccessCode.OK, mateQueryService.getPosts(facilityId, pageable));
