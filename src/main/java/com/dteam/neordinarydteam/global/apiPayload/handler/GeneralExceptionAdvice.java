@@ -14,6 +14,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -154,6 +155,23 @@ public class GeneralExceptionAdvice {
     protected ResponseEntity<ApiResponse<Void>> handleAccessDeniedException(AccessDeniedException ex) {
         log.warn("[Access Denied] 권한 부족: {}", ex.getMessage());
         return createErrorResponse(ErrorCode.FORBIDDEN, null);
+    }
+
+    /**
+     * [Spring Data Exception] 잘못된 엔티티 속성 이름으로 정렬(Sort) 요청 시 발생 (400)
+     */
+    @ExceptionHandler(PropertyReferenceException.class)
+    protected ResponseEntity<ApiResponse<List<ErrorResponse>>> handlePropertyReferenceException(
+            PropertyReferenceException ex) {
+        log.info(
+                "[Property Reference Error] 무효한 정렬 필드 요청 - Field: {}, Type: {}",
+                ex.getPropertyName(),
+                ex.getType().getType().getSimpleName());
+
+        List<ErrorResponse> errors =
+                exceptionConverter.from(String.format("'%s' 속성은 해당 엔티티에 존재하지 않는 정렬 기준입니다.", ex.getPropertyName()));
+
+        return createErrorResponse(ErrorCode.INVALID_TYPE_VALUE, errors);
     }
 
     /**
