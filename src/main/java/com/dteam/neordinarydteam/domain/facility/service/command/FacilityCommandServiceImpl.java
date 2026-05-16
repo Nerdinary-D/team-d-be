@@ -77,18 +77,18 @@ public class FacilityCommandServiceImpl implements FacilityCommandService {
                 .addressId(savedAddress.getId())
                 .category(request.category())
                 .image(imageUrl)
-                .infraInfos(request.infraInfos())
+                .region(request.region())
+                .curations(request.curations())
                 .build();
 
         Facility savedFacility = facilityRepository.save(facility);
 
-        // Owner 저장
-        Owner owner = Owner.builder()
-                .memberId(member.getId())
-                .facilityId(savedFacility.getId())
-                .build();
+        // Owner에 시설 연결
+        Owner owner = ownerRepository
+                .findByMemberId(member.getId())
+                .orElseThrow(() -> new FacilityException(FacilityErrorCode.MEMBER_NOT_FOUND));
 
-        ownerRepository.save(owner);
+        owner.assignFacility(savedFacility.getId());
 
         return new FacilityResponse.CreateDTO(savedFacility.getId());
     }

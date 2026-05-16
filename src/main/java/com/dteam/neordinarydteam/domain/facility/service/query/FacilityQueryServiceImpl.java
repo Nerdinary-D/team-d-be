@@ -42,7 +42,8 @@ public class FacilityQueryServiceImpl implements FacilityQueryService {
                 facility.getName(),
                 facility.getCategory(),
                 facility.getImage(),
-                facility.getInfraInfos(),
+                facility.getRegion(),
+                facility.getCurations(),
                 addressDTO);
     }
 }
