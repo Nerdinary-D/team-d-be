@@ -33,6 +33,7 @@ public class FacilityController {
                     @io.swagger.v3.oas.annotations.parameters.RequestBody(
                             content =
                                     @io.swagger.v3.oas.annotations.media.Content(
+                                            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
                                             encoding =
                                                     @io.swagger.v3.oas.annotations.media.Encoding(
                                                             name = "request",

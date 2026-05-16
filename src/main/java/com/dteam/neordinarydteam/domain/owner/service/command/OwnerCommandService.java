@@ -1,10 +1,8 @@
 package com.dteam.neordinarydteam.domain.owner.service.command;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.dteam.neordinarydteam.domain.owner.dto.request.OwnerRequest;
+import com.dteam.neordinarydteam.domain.owner.dto.response.OwnerResponse;
 
-@Service
-@RequiredArgsConstructor
-@Transactional
-public class OwnerCommandService {}
+public interface OwnerCommandService {
+    OwnerResponse.CreateDTO createOwner(OwnerRequest.CreateDTO dto);
+}
