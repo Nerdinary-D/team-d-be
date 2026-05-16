@@ -1,12 +1,64 @@
 package com.dteam.neordinarydteam.domain.facility.controller;
 
+import com.dteam.neordinarydteam.domain.facility.dto.request.FacilityRequest;
+import com.dteam.neordinarydteam.domain.facility.dto.response.FacilityResponse;
+import com.dteam.neordinarydteam.domain.facility.exception.code.FacilityErrorCode;
+import com.dteam.neordinarydteam.domain.facility.service.command.FacilityCommandService;
+import com.dteam.neordinarydteam.domain.facility.service.query.FacilityQueryService;
+import com.dteam.neordinarydteam.global.apiPayload.code.ErrorCode;
+import com.dteam.neordinarydteam.global.apiPayload.code.SuccessCode;
+import com.dteam.neordinarydteam.global.apiPayload.response.ApiResponse;
+import com.dteam.neordinarydteam.global.swagger.annotation.ApiErrorCodeExamples;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "Facility", description = "Facility API")
+@Tag(name = "Facility", description = "시설 관련 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/examples")
-public class FacilityController {}
+@RequestMapping("/api/v1/facilities")
+public class FacilityController {
+
+    private final FacilityCommandService facilityCommandService;
+    private final FacilityQueryService facilityQueryService;
+
+    @Operation(
+            summary = "시설 등록",
+            description = "사장님이 시설을 등록합니다.",
+            requestBody =
+                    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                            content =
+                                    @io.swagger.v3.oas.annotations.media.Content(
+                                            encoding =
+                                                    @io.swagger.v3.oas.annotations.media.Encoding(
+                                                            name = "request",
+                                                            contentType = MediaType.APPLICATION_JSON_VALUE))))
+    @ApiErrorCodeExamples(
+            value = {ErrorCode.INVALID_TYPE_VALUE},
+            facility = {
+                FacilityErrorCode.INVALID_UUID,
+                FacilityErrorCode.MEMBER_NOT_FOUND,
+                FacilityErrorCode.GEOCODING_FAILED,
+                FacilityErrorCode.IMAGE_UPLOAD_FAILED
+            })
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<FacilityResponse.CreateDTO> createFacility(
+            @RequestParam String uuid,
+            @Valid @RequestPart("request") FacilityRequest.CreateDTO request,
+            @RequestPart("image") MultipartFile image) {
+        FacilityResponse.CreateDTO response = facilityCommandService.createFacility(uuid, request, image);
+        return ApiResponse.onSuccess(SuccessCode.CREATED, response);
+    }
+
+    @Operation(summary = "시설 상세 조회", description = "시설 상세 정보를 조회합니다.")
+    @ApiErrorCodeExamples(facility = {FacilityErrorCode.FACILITY_NOT_FOUND})
+    @GetMapping("/{facilityId}")
+    public ApiResponse<FacilityResponse.DetailDTO> getFacility(@PathVariable Long facilityId) {
+        FacilityResponse.DetailDTO response = facilityQueryService.getFacility(facilityId);
+        return ApiResponse.onSuccess(SuccessCode.OK, response);
+    }
+}

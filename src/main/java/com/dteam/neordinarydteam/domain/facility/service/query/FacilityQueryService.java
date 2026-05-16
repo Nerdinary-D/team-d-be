@@ -1,10 +1,7 @@
 package com.dteam.neordinarydteam.domain.facility.service.query;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.dteam.neordinarydteam.domain.facility.dto.response.FacilityResponse;
 
-@Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class FacilityQueryService {}
+public interface FacilityQueryService {
+    FacilityResponse.DetailDTO getFacility(Long facilityId);
+}
