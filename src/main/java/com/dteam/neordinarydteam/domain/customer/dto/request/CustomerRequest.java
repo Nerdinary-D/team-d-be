@@ -14,7 +14,7 @@ public final class CustomerRequest {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
-    @Schema(description = "고객 생성 요청 객체")
+    @Schema(name = "CustomerCreateRequest", description = "고객 생성 요청 객체")
     public record CreateDTO(
             @Schema(
                             description = "회원 고유 UUID",
@@ -27,10 +27,7 @@ public final class CustomerRequest {
                             example = "[\"NO_STEP_COURT_ENTRY\", \"GUIDE_DOG_ALLOWED\"]",
                             requiredMode = Schema.RequiredMode.REQUIRED)
                     @NotEmpty(message = "큐레이션 정보는 최소 하나 이상 필요합니다.")
-                    List<@NotNull(message = "큐레이션 항목은 null일 수 없습니다.") Curation> curations,
-            @Schema(description = "활동 지역", example = "SEOUL", requiredMode = Schema.RequiredMode.REQUIRED)
-                    @NotNull(message = "지역 정보는 필수 값입니다.")
-                    Region region) {}
+                    List<@NotNull(message = "큐레이션 항목은 null일 수 없습니다.") Curation> curations) {}
 
     @Schema(description = "고객 정보 수정 요청 객체")
     public record UpdateDTO(

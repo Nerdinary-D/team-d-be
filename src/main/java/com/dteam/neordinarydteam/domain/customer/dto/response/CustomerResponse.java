@@ -13,7 +13,7 @@ public final class CustomerResponse {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
-    @Schema(description = "고객 생성 완료 응답 객체")
+    @Schema(name = "CustomerCreateResponse", description = "고객 생성 완료 응답 객체")
     public record CreateDTO(
             @Schema(description = "생성된 고객의 회원 UUID", example = "123e4567-e89b-12d3-a456-426614174000") UUID uuid,
             @Schema(description = "생성 일시") LocalDateTime createdAt) {}
