@@ -17,11 +17,12 @@ public class Facility extends BaseEntity {
     @Column
     private String name;
 
-    @Column
-    private String address;
+    @Column(name = "address_id", nullable = false)
+    private Long addressId;
 
+    @Enumerated(EnumType.STRING)
     @Column
-    private String category;
+    private Category category;
 
     @Column
     private String image;
@@ -31,7 +32,4 @@ public class Facility extends BaseEntity {
     @CollectionTable(name = "facility_infra_info", joinColumns = @JoinColumn(name = "facility_id"))
     @Column(name = "infra_info")
     private List<InfraInfo> infraInfos = new ArrayList<>();
-
-    @Column
-    private boolean badge;
 }
