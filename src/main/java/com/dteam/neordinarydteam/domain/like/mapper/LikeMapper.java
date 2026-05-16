@@ -24,6 +24,7 @@ public interface LikeMapper {
     @Mapping(target = "name", source = "like.facility.name")
     @Mapping(target = "category", source = "like.facility.category")
     @Mapping(target = "hashTags", source = "like.facility.curations")
+    @Mapping(target = "facilityId", source = "like.facility.id")
     @Mapping(target = "isLiked", constant = "true") // 내가 좋아요 한 목록이므로 항상 true 지정
     LikeResponse.MyDTO toMyDTO(Like like, UUID uuid);
 
