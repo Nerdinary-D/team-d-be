@@ -5,4 +5,6 @@ import java.util.UUID;
 
 public interface MemberQueryService {
     MemberResponse.RoleDTO getMemberRole(UUID uuid);
+
+    MemberResponse.InfoDTO getMemberInfo(UUID uuid);
 }

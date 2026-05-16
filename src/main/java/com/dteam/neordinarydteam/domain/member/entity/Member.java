@@ -23,4 +23,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberRole role;
+
+    @Column(nullable = false)
+    private String nickname;
 }

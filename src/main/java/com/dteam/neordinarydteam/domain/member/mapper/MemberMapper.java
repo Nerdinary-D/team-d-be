@@ -12,5 +12,7 @@ public interface MemberMapper {
 
     MemberResponse.RoleDTO toRoleDTO(Member member);
 
-    Member toCreateEntity(UUID uuid, MemberRole role);
+    MemberResponse.InfoDTO toInfoDTO(Member member);
+
+    Member toCreateEntity(UUID uuid, MemberRole role, String nickname);
 }
