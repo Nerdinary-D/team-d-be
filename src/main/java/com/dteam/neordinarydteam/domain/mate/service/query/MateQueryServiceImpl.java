@@ -26,13 +26,19 @@ public class MateQueryServiceImpl implements MateQueryService {
 
     @Override
     public PageResponse<MateResponse.ListDTO> getPosts(Long facilityId, Pageable pageable) {
-        // Facility 존재 여부 검증 및 조회
-        Facility facility = facilityRepository
-                .findById(facilityId)
-                .orElseThrow(() -> new FacilityException(FacilityErrorCode.FACILITY_NOT_FOUND));
+        Page<Mate> matePage;
 
-        // 해당 Facility를 가진 Mate 페이징 조회
-        Page<Mate> matePage = mateRepository.findAllByFacility(facility, pageable);
+        if (facilityId == null) {
+            // 조건 없이 전체를 페이징 조회
+            matePage = mateRepository.findAll(pageable);
+        } else {
+            // Facility 존재 여부 검증 및 조건 조회
+            Facility facility = facilityRepository
+                    .findById(facilityId)
+                    .orElseThrow(() -> new FacilityException(FacilityErrorCode.FACILITY_NOT_FOUND));
+
+            matePage = mateRepository.findAllByFacility(facility, pageable);
+        }
 
         // PageConverter를 통해 DTO 기반의 PageResponse로 변환 후 반환
         return PageConverter.toPageResponse(matePage, mateMapper::toListDTO);

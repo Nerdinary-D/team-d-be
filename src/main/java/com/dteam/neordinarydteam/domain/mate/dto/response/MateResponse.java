@@ -1,5 +1,6 @@
 package com.dteam.neordinarydteam.domain.mate.dto.response;
 
+import com.dteam.neordinarydteam.global.enums.Region;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -17,6 +18,7 @@ public final class MateResponse {
 
     public record ListDTO(
             Long facilityId,
+            Region region,
             String title,
             String meetingTime,
             String content,
