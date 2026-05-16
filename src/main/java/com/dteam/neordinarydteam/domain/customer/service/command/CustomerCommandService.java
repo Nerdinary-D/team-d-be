@@ -7,7 +7,9 @@ import java.util.UUID;
 public interface CustomerCommandService {
     CustomerResponse.CreateDTO createCustomer(CustomerRequest.CreateDTO dto);
 
-    CustomerResponse.UpdateDTO updateCustomer(UUID uuid, CustomerRequest.UpdateDTO dto);
+    CustomerResponse.UpdateCurationsDTO updateCustomerCurations(UUID uuid, CustomerRequest.UpdateCurationsDTO dto);
+
+    CustomerResponse.UpdateRegionDTO updateCustomerRegion(UUID uuid, CustomerRequest.UpdateRegionDTO dto);
 
     CustomerResponse.DeleteDTO deleteCustomer(UUID uuid);
 }

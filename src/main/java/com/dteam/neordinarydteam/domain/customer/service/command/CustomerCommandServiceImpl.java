@@ -31,7 +31,8 @@ public class CustomerCommandServiceImpl implements CustomerCommandService {
         if (memberRepository.existsByUuid(dto.uuid())) {
             throw new CustomerException(CustomerErrorCode.CUSTOMER_ALREADY_EXISTS);
         }
-        Member savedMember = memberRepository.save(memberMapper.toCreateEntity(dto.uuid(), MemberRole.ROLE_CUSTOMER));
+        Member savedMember = memberRepository.save(
+                memberMapper.toCreateEntity(dto.uuid(), MemberRole.ROLE_CUSTOMER, dto.nickname()));
 
         Customer savedCustomer = customerRepository.save(customerMapper.toCreateEntity(dto, savedMember));
 
@@ -39,14 +40,26 @@ public class CustomerCommandServiceImpl implements CustomerCommandService {
     }
 
     @Override
-    public CustomerResponse.UpdateDTO updateCustomer(UUID uuid, CustomerRequest.UpdateDTO dto) {
+    public CustomerResponse.UpdateCurationsDTO updateCustomerCurations(
+            UUID uuid, CustomerRequest.UpdateCurationsDTO dto) {
         Customer customer = customerRepository
                 .findByUuid(uuid)
                 .orElseThrow(() -> new CustomerException(CustomerErrorCode.CUSTOMER_NOT_FOUND));
 
-        customer.update(dto.curations(), dto.region());
+        customer.updateCurations(dto.curations());
 
-        return customerMapper.toUpdateDTO(customer);
+        return customerMapper.toUpdateCurationsDTO(customer);
+    }
+
+    @Override
+    public CustomerResponse.UpdateRegionDTO updateCustomerRegion(UUID uuid, CustomerRequest.UpdateRegionDTO dto) {
+        Customer customer = customerRepository
+                .findByUuid(uuid)
+                .orElseThrow(() -> new CustomerException(CustomerErrorCode.CUSTOMER_NOT_FOUND));
+
+        customer.updateRegion(dto.region());
+
+        return customerMapper.toUpdateRegionDTO(customer);
     }
 
     @Override

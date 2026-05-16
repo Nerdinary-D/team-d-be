@@ -55,8 +55,8 @@ public class FacilityCommandServiceImpl implements FacilityCommandService {
             throw new FacilityException(FacilityErrorCode.GEOCODING_FAILED);
         }
 
-        // S3 이미지 업로드 (DB 저장 전에 수행하여 실패 시 고아 레코드 방지)
-        String imageUrl = s3Service.uploadFile(image);
+        // S3 이미지 업로드 (이미지가 있는 경우에만)
+        String imageUrl = (image != null && !image.isEmpty()) ? s3Service.uploadFile(image) : null;
 
         // Address 저장
         Address address = Address.builder()

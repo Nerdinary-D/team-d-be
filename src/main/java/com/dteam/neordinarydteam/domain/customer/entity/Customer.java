@@ -33,8 +33,14 @@ public class Customer extends BaseEntity {
     @Builder.Default
     private Region region = Region.SEOUL;
 
-    public void update(List<Curation> curations, Region region) {
-        this.curations = curations;
+    public void updateRegion(Region region) {
         this.region = region;
+    }
+
+    public void updateCurations(List<Curation> curations) {
+        this.curations.clear();
+        if (curations != null) {
+            this.curations.addAll(curations);
+        }
     }
 }

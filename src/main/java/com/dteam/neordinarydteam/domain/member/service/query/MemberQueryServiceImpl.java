@@ -26,4 +26,13 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 
         return memberMapper.toRoleDTO(member);
     }
+
+    @Override
+    public MemberResponse.InfoDTO getMemberInfo(UUID uuid) {
+        Member member = memberRepository
+                .findByUuid(uuid)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        return memberMapper.toInfoDTO(member);
+    }
 }

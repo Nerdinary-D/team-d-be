@@ -11,6 +11,7 @@ import com.dteam.neordinarydteam.global.apiPayload.response.ApiResponse;
 import com.dteam.neordinarydteam.global.apiPayload.response.PageResponse;
 import com.dteam.neordinarydteam.global.swagger.annotation.ApiErrorCodeExamples;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class FacilityController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<FacilityResponse.CreateDTO> createFacility(
             @Valid @RequestPart("request") FacilityRequest.CreateDTO request,
-            @RequestPart("image") MultipartFile image) {
+            @RequestPart(value = "image", required = false) MultipartFile image) {
         FacilityResponse.CreateDTO response = facilityCommandService.createFacility(request, image);
         return ApiResponse.onSuccess(SuccessCode.CREATED, response);
     }
@@ -70,7 +71,9 @@ public class FacilityController {
     @ApiErrorCodeExamples(facility = {FacilityErrorCode.CUSTOMER_NOT_FOUND})
     @GetMapping("/recommended/{uuid}")
     public ApiResponse<PageResponse<FacilityResponse.ListItemDTO>> getRecommendedFacilities(
-            @PathVariable String uuid, @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
+            @Parameter(description = "회원 UUID", example = "123e4567-e89b-12d3-a456-426614174000") @PathVariable
+                    String uuid,
+            @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
         PageResponse<FacilityResponse.ListItemDTO> response =
                 facilityQueryService.getRecommendedFacilities(uuid, pageable);
         return ApiResponse.onSuccess(SuccessCode.OK, response);

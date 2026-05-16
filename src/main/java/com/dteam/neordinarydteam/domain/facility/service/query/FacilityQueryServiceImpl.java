@@ -9,6 +9,9 @@ import com.dteam.neordinarydteam.domain.facility.entity.Facility;
 import com.dteam.neordinarydteam.domain.facility.exception.FacilityException;
 import com.dteam.neordinarydteam.domain.facility.exception.code.FacilityErrorCode;
 import com.dteam.neordinarydteam.domain.facility.repository.FacilityRepository;
+import com.dteam.neordinarydteam.domain.member.entity.Member;
+import com.dteam.neordinarydteam.domain.member.enums.MemberRole;
+import com.dteam.neordinarydteam.domain.member.repository.MemberRepository;
 import com.dteam.neordinarydteam.global.apiPayload.converter.PageConverter;
 import com.dteam.neordinarydteam.global.apiPayload.response.PageResponse;
 import com.dteam.neordinarydteam.global.enums.Curation;
@@ -32,6 +35,7 @@ public class FacilityQueryServiceImpl implements FacilityQueryService {
     private final FacilityRepository facilityRepository;
     private final AddressRepository addressRepository;
     private final CustomerRepository customerRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public FacilityResponse.DetailDTO getFacility(Long facilityId) {
@@ -63,29 +67,50 @@ public class FacilityQueryServiceImpl implements FacilityQueryService {
 
     @Override
     public PageResponse<FacilityResponse.ListItemDTO> getRecommendedFacilities(String uuid, Pageable pageable) {
-        Customer customer = customerRepository
+        Member member = memberRepository
                 .findByUuid(UUID.fromString(uuid))
-                .orElseThrow(() -> new FacilityException(FacilityErrorCode.CUSTOMER_NOT_FOUND));
+                .orElseThrow(() -> new FacilityException(FacilityErrorCode.MEMBER_NOT_FOUND));
 
-        Set<Curation> customerCurations = Set.copyOf(customer.getCurations());
+        List<FacilityResponse.ListItemDTO> allItems;
 
-        List<FacilityResponse.ListItemDTO> allItems = facilityRepository.findAll().stream()
-                .map(facility -> {
-                    int matchCount = (int) facility.getCurations().stream()
-                            .filter(customerCurations::contains)
-                            .count();
-                    return new FacilityResponse.ListItemDTO(
+        if (member.getRole() == MemberRole.ROLE_OWNER) {
+            // Owner는 큐레이션 교집합 없이 전체 목록 반환
+            allItems = facilityRepository.findAll().stream()
+                    .map(facility -> new FacilityResponse.ListItemDTO(
                             facility.getId(),
                             facility.getName(),
                             facility.getCategory(),
                             facility.getImage(),
                             facility.getRegion(),
                             facility.getCurations(),
-                            matchCount);
-                })
-                .sorted(Comparator.comparingInt(FacilityResponse.ListItemDTO::matchCount)
-                        .reversed())
-                .collect(Collectors.toList());
+                            0))
+                    .collect(Collectors.toList());
+        } else {
+            // Customer는 큐레이션 교집합 기반 정렬
+            Customer customer = customerRepository
+                    .findByUuid(UUID.fromString(uuid))
+                    .orElseThrow(() -> new FacilityException(FacilityErrorCode.CUSTOMER_NOT_FOUND));
+
+            Set<Curation> customerCurations = Set.copyOf(customer.getCurations());
+
+            allItems = facilityRepository.findAll().stream()
+                    .map(facility -> {
+                        int matchCount = (int) facility.getCurations().stream()
+                                .filter(customerCurations::contains)
+                                .count();
+                        return new FacilityResponse.ListItemDTO(
+                                facility.getId(),
+                                facility.getName(),
+                                facility.getCategory(),
+                                facility.getImage(),
+                                facility.getRegion(),
+                                facility.getCurations(),
+                                matchCount);
+                    })
+                    .sorted(Comparator.comparingInt(FacilityResponse.ListItemDTO::matchCount)
+                            .reversed())
+                    .collect(Collectors.toList());
+        }
 
         int start = (int) pageable.getOffset();
         int end = Math.min(start + pageable.getPageSize(), allItems.size());

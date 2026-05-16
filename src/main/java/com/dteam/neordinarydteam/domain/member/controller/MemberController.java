@@ -37,4 +37,18 @@ public class MemberController {
 
         return ApiResponse.onSuccess(SuccessCode.OK, memberQueryService.getMemberRole(uuid));
     }
+
+    @Operation(summary = "회원 정보 조회 API", description = "회원의 UUID를 통해 해당 회원의 정보(UUID, 역할, 닉네임)를 조회합니다.")
+    @ApiErrorCodeExamples(
+            value = {ErrorCode.INVALID_TYPE_VALUE},
+            member = {MemberErrorCode.MEMBER_NOT_FOUND})
+    @GetMapping("/{uuid}")
+    public ApiResponse<MemberResponse.InfoDTO> getMemberInfo(
+            @Parameter(description = "회원의 고유 UUID", example = "123e4567-e89b-12d3-a456-426614174000")
+                    @PathVariable
+                    @NotNull(message = "UUID는 필수 값입니다.")
+                    UUID uuid) {
+
+        return ApiResponse.onSuccess(SuccessCode.OK, memberQueryService.getMemberInfo(uuid));
+    }
 }
