@@ -1,5 +1,6 @@
 package com.dteam.neordinarydteam.global.swagger.annotation;
 
+import com.dteam.neordinarydteam.domain.member.exception.code.MemberErrorCode;
 import com.dteam.neordinarydteam.global.apiPayload.code.ErrorCode;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,4 +13,6 @@ public @interface ApiErrorCodeExamples {
 
     // ErrorCode
     ErrorCode[] value() default {};
+
+    MemberErrorCode[] member() default {};
 }
