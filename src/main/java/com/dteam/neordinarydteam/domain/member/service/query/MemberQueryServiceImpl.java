@@ -6,6 +6,7 @@ import com.dteam.neordinarydteam.domain.member.exception.MemberException;
 import com.dteam.neordinarydteam.domain.member.exception.code.MemberErrorCode;
 import com.dteam.neordinarydteam.domain.member.mapper.MemberMapper;
 import com.dteam.neordinarydteam.domain.member.repository.MemberRepository;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,7 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     private final MemberMapper memberMapper;
 
     @Override
-    public MemberResponse.RoleDTO getMemberRole(String uuid) {
+    public MemberResponse.RoleDTO getMemberRole(UUID uuid) {
         Member member = memberRepository
                 .findByUuid(uuid)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
