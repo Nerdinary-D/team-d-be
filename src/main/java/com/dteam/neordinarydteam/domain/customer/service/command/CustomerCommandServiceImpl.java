@@ -28,6 +28,9 @@ public class CustomerCommandServiceImpl implements CustomerCommandService {
 
     @Override
     public CustomerResponse.CreateDTO createCustomer(CustomerRequest.CreateDTO dto) {
+        if (memberRepository.existsByUuid(dto.uuid())) {
+            throw new CustomerException(CustomerErrorCode.CUSTOMER_ALREADY_EXISTS);
+        }
         Member savedMember = memberRepository.save(memberMapper.toCreateEntity(dto.uuid(), MemberRole.ROLE_CUSTOMER));
 
         Customer savedCustomer = customerRepository.save(customerMapper.toCreateEntity(dto, savedMember));

@@ -20,7 +20,10 @@ public final class CustomerRequest {
                             requiredMode = Schema.RequiredMode.REQUIRED)
                     @NotNull(message = "UUID는 필수 값입니다.")
                     UUID uuid,
-            @Schema(description = "큐레이션 설정 여부", example = "ACTIVE", requiredMode = Schema.RequiredMode.REQUIRED)
+            @Schema(
+                            description = "큐레이션 설정 여부",
+                            example = "NO_STEP_COURT_ENTRY",
+                            requiredMode = Schema.RequiredMode.REQUIRED)
                     @NotNull(message = "큐레이션 정보는 필수 값입니다.")
                     Curation curation,
             @Schema(description = "활동 지역", example = "SEOUL", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -29,7 +32,10 @@ public final class CustomerRequest {
 
     @Schema(description = "고객 정보 수정 요청 객체")
     public record UpdateDTO(
-            @Schema(description = "변경할 큐레이션 설정", example = "INACTIVE", requiredMode = Schema.RequiredMode.REQUIRED)
+            @Schema(
+                            description = "변경할 큐레이션 설정",
+                            example = "GUIDE_DOG_ALLOWED",
+                            requiredMode = Schema.RequiredMode.REQUIRED)
                     @NotNull(message = "큐레이션 정보는 필수 값입니다.")
                     Curation curation,
             @Schema(description = "변경할 활동 지역", example = "BUSAN", requiredMode = Schema.RequiredMode.REQUIRED)
