@@ -1,5 +1,6 @@
 package com.dteam.neordinarydteam.global.swagger.annotation;
 
+import com.dteam.neordinarydteam.domain.facility.exception.code.FacilityErrorCode;
 import com.dteam.neordinarydteam.domain.member.exception.code.MemberErrorCode;
 import com.dteam.neordinarydteam.global.apiPayload.code.ErrorCode;
 import java.lang.annotation.ElementType;
@@ -15,4 +16,6 @@ public @interface ApiErrorCodeExamples {
     ErrorCode[] value() default {};
 
     MemberErrorCode[] member() default {};
+
+    FacilityErrorCode[] facility() default {};
 }

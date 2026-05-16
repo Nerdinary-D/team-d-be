@@ -2,10 +2,13 @@ package com.dteam.neordinarydteam.domain.facility.controller;
 
 import com.dteam.neordinarydteam.domain.facility.dto.request.FacilityRequest;
 import com.dteam.neordinarydteam.domain.facility.dto.response.FacilityResponse;
+import com.dteam.neordinarydteam.domain.facility.exception.code.FacilityErrorCode;
 import com.dteam.neordinarydteam.domain.facility.service.command.FacilityCommandService;
 import com.dteam.neordinarydteam.domain.facility.service.query.FacilityQueryService;
+import com.dteam.neordinarydteam.global.apiPayload.code.ErrorCode;
 import com.dteam.neordinarydteam.global.apiPayload.code.SuccessCode;
 import com.dteam.neordinarydteam.global.apiPayload.response.ApiResponse;
+import com.dteam.neordinarydteam.global.swagger.annotation.ApiErrorCodeExamples;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,9 @@ public class FacilityController {
                                                     @io.swagger.v3.oas.annotations.media.Encoding(
                                                             name = "request",
                                                             contentType = MediaType.APPLICATION_JSON_VALUE))))
+    @ApiErrorCodeExamples(
+            value = {ErrorCode.INVALID_TYPE_VALUE},
+            facility = {FacilityErrorCode.MEMBER_NOT_FOUND, FacilityErrorCode.IMAGE_UPLOAD_FAILED})
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<FacilityResponse.CreateDTO> createFacility(
             @RequestParam String uuid,
@@ -43,6 +49,7 @@ public class FacilityController {
     }
 
     @Operation(summary = "시설 상세 조회", description = "시설 상세 정보를 조회합니다.")
+    @ApiErrorCodeExamples(facility = {FacilityErrorCode.FACILITY_NOT_FOUND})
     @GetMapping("/{facilityId}")
     public ApiResponse<FacilityResponse.DetailDTO> getFacility(@PathVariable Long facilityId) {
         FacilityResponse.DetailDTO response = facilityQueryService.getFacility(facilityId);
